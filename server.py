@@ -33,4 +33,32 @@ def test():
     cur.close()
     conn.close()
 
+    output = """{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {"test": "test"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.7421875,
+          54.83577752045248
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"test": "test"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.21875,
+          54.583289756006316
+        ]
+      }
+    }
+  ]
+}"""
+
     return output

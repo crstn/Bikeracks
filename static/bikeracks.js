@@ -20,6 +20,10 @@ function onLocationFound(e) {
     url: "/test?lat="+e.latlng.lat+"&lng="+e.latlng.lng
   }).done(function(data) {
     console.log(data);
+
+    var geojsonFeature = data;
+    L.geoJSON(geojsonFeature).addTo(map);
+
   });
 }
 
