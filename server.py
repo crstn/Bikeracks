@@ -10,8 +10,8 @@ def hello():
 
 @app.route('/test')
 def test():
-    lat = request.args.get("lat")
-    lng = request.args.get("lng")
+    lat = float(request.args.get("lat", 54))
+    lng = float(request.args.get("lng", 10))
 
     conn = psycopg2.connect("dbname='bikeracks' \
                          host='localhost' \
@@ -21,8 +21,8 @@ def test():
     cur = conn.cursor()
     cur.execute("""SELECT id, vejnavn, ST_AsGeoJSON(geom)
                    FROM racks
-                   ORDER BY geom <-> 'SRID=4326;POINT(12.54219056648356 55.65044347879956)'::geometry
-                   LIMIT 5;""")
+                   ORDER BY geom <-> 'SRID=4326;POINT(%s %s)'::geometry
+                   LIMIT 5;""", (lng, lat))
     rows = cur.fetchall()
 
     output = ""
