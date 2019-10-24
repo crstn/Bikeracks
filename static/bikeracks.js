@@ -15,6 +15,12 @@ function onLocationFound(e) {
     .bindPopup("You are within " + radius + " meters from this point").openPopup();
 
   L.circle(e.latlng, radius).addTo(map);
+
+  $.ajax({
+    url: "/test"
+  }).done(function(data) {
+    alert(data);
+  });
 }
 
 function onLocationError(e) {
