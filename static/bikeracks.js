@@ -19,7 +19,7 @@ function onLocationFound(e) {
   $.ajax({
     url: "/test?lat="+e.latlng.lat+"&lng="+e.latlng.lng
   }).done(function(data) {
-    alert(data);
+    console.log(data);
   });
 }
 
