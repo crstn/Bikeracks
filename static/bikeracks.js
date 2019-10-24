@@ -17,7 +17,7 @@ function onLocationFound(e) {
   L.circle(e.latlng, radius).addTo(map);
 
   $.ajax({
-    url: "/test"
+    url: "/test?lat="+e.latlng.lat+"&lng="+e.latlng.lng
   }).done(function(data) {
     alert(data);
   });

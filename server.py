@@ -9,4 +9,6 @@ def hello():
 
 @app.route('/test')
 def test():
-    return f'Hooray!'
+    lat = request.args.get("lat")
+    lng = request.args.get("lng")
+    return f'You are at '+lat+', '+lng
