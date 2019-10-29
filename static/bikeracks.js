@@ -41,6 +41,18 @@ function onLocationError(e) {
 map.on('locationfound', onLocationFound);
 map.on('locationerror', onLocationError);
 
+map.on('click', function(e){
+  $.ajax({
+    url: "/test?lat=" + e.latlng.lat + "&lng=" + e.latlng.lng
+  }).done(function(data) {
+
+    L.geoJSON(data, {
+      onEachFeature: attachPopup
+    }).addTo(map);
+
+  });
+})
+
 map.locate({
   setView: true,
   maxZoom: 16
