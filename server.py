@@ -10,56 +10,46 @@ def hello():
 
 @app.route('/test')
 def test():
-    # lat = float(request.args.get("lat", 54))
-    # lng = float(request.args.get("lng", 10))
-    #
-    # conn = psycopg2.connect("dbname='bikeracks' \
-    #                      host='localhost' \
-    #                      user='postgres' \
-    #                      password='postgres'")
-    #
-    # cur = conn.cursor()
-    # cur.execute("""SELECT id, vejnavn, ST_AsGeoJSON(geom)
-    #                FROM racks
-    #                ORDER BY geom <-> 'SRID=4326;POINT(%s %s)'::geometry
-    #                LIMIT 5;""", (lng, lat))
-    # rows = cur.fetchall()
-    #
-    # output = ""
-    #
-    # for row in rows:
-    #     output = output + row[2]
-    #
-    # cur.close()
-    # conn.close()
+    lat = float(request.args.get("lat", 54))
+    lng = float(request.args.get("lng", 10))
+
+    conn = psycopg2.connect("dbname='bikeracks' \
+                         host='localhost' \
+                         user='postgres' \
+                         password='postgres'")
+
+    cur = conn.cursor()
+    cur.execute("""SELECT id, vejnavn, ST_AsGeoJSON(geom)
+                   FROM racks
+                   ORDER BY geom <-> 'SRID=4326;POINT(%s %s)'::geometry
+                   LIMIT 5;""", (lng, lat))
+    rows = cur.fetchall()
 
     output = """{
   "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": {"test": "test"},
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          12.7421875,
-          54.83577752045248
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {"test": "test"},
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          12.21875,
-          54.583289756006316
-        ]
-      }
-    }
-  ]
-}"""
+  "features": ["""
+
+    for row in rows:
+
+        output = output + '''{
+          "type": "Feature",
+          "properties": {
+              "id": '''+str(row[0])+''',
+              "streetname": "'''+row[1]+'''"},
+          "geometry": '''+row[2]+'''
+        },'''
+
+
+    output = output[:-1] + """]
+  }"""
+
+
+    cur.close()
+    conn.close()
+
+
+
+
 
     return Response(response=output,
                     status=200,
