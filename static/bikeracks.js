@@ -8,6 +8,13 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
   id: 'mapbox.streets'
 }).addTo(map);
 
+function attachPopup(feature, layer) {
+  // does this feature have a property named popupContent?
+  if (feature.properties && feature.properties.streetname) {
+    layer.bindPopup(feature.properties.streetname);
+  }
+}
+
 function onLocationFound(e) {
   var radius = e.accuracy / 2;
 
@@ -17,12 +24,12 @@ function onLocationFound(e) {
   L.circle(e.latlng, radius).addTo(map);
 
   $.ajax({
-    url: "/test?lat="+e.latlng.lat+"&lng="+e.latlng.lng
+    url: "/test?lat=" + e.latlng.lat + "&lng=" + e.latlng.lng
   }).done(function(data) {
-    console.log(data);
 
-    var geojsonFeature = data;
-    L.geoJSON(geojsonFeature).addTo(map);
+    L.geoJSON(data, {
+      onEachFeature: attachPopup
+    }).addTo(map);
 
   });
 }
